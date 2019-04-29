@@ -8,8 +8,9 @@
   // See part II. of this tutorial for an example of how
   // to do a server-side OAuth flow and avoid this problem
   var config = {
-      clientId: '',
-      redirectUri: 'http://localhost:3333/redirect',
+      clientId: 'j7bhw2xr6pn5bsqq7av7qud7',
+      //redirectUri: 'http://localhost:3333/redirect',
+      redirectUri: 'https://wdc-infusionsoft.herokuapp.com/redirect',
       authUrl: 'https://signin.infusionsoft.com/app/oauth/authorize',
       version: '20190102'
   };
