@@ -26,7 +26,9 @@ var clientID = process.env.INFUSIONSHOFT_CLIENT_ID || config.CLIENT_ID;
 var clientSecret = process.env.INFUSIONSHOFT_CLIENT_SECRET || config.CLIENT_SECRET;
 console.log(clientID);
 console.log(clientSecret);
-var redirectURI = config.HOSTPATH + ":" + config.PORT + config.REDIRECT_PATH
+//var redirectURI = config.HOSTPATH + ":" + config.PORT + config.REDIRECT_PATH
+var redirectURI = config.HOSTPATH + ":" + app.get('port') + config.REDIRECT_PATH
+
 
 // -------------------------------------------------- //
 // Routes

@@ -184,71 +184,30 @@
             //    tableau.abortWithError("No results found - campaign");
             //}
         });
-        /*
-        tableau.log("in get campaigns");
-        var xhr = $.ajax({
-            url: campaignsUri,
-            Accept: 'application/json', 
-            //dataType: 'json',
-            success: function (data) {
-                if (data.response) {
-                    var campaigns = data.response.campaigns.items;
-
-                    var ii;
-                    for (ii = 0; ii < campaigns.length; ++ii) {
-                        var campaign = {'id': campaigns[ii].id,
-                                    'name': campaigns[ii].name,
-                                    'active_contact_count': campaigns[ii].active_contact_count,
-                                    'completed_contact_count' : campaigns[ii].completed_contact_count};
-                        dataToReturn.push(campaign);
-                    }
-
-                    table.appendRows(dataToReturn);
-                    doneCallback();
-                }
-                else {
-                    tableau.abortWithError("No results found - campaign");
-                }
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                tableau.log("some error");
-                // WDC should do more granular error checking here
-                // or on the server side.  This is just a sample of new API.
-                tableau.abortForAuth("Invalid Access Token");
-            }
-        });*/
+ 
     }
     else if (table.tableInfo.id == "Contacts") {
-        var xhr = $.ajax({
-            url: contactsUri,
-            dataType: 'json',
-            success: function (data) {
-                if (data.response) {
-                    var contacts = data.response.contacts.items;
+        $.getJSON(contactsUri, function(data) {
+            //if (data.response) {
+                var contacts = data.contacts;
 
-                    var ii;
-                    for (ii = 0; ii < contacts.length; ++ii) {
-                        var contact = {'id': contacts[ii].id,
+                var ii;
+                for (ii = 0; ii < contacts.length; ++ii) {
+                    var contact = {'id': contacts[ii].id,
                                     'given_name': contacts[ii].given_name,
                                     'middle_name': contacts[ii].middle_name,
                                     'family_name' : contacts[ii].family_name,
-                                    'owner_id' : contacts[ii].family_name,
+                                    'owner_id' : contacts[ii].owner_id,
                                 };
-                        dataToReturn.push(contact);
-                    }
+                    dataToReturn.push(contact);
+                }
 
-                    table.appendRows(dataToReturn);
-                    doneCallback();
-                }
-                else {
-                    tableau.abortWithError("No results found - contacts");
-                }
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                // WDC should do more granular error checking here
-                // or on the server side.  This is just a sample of new API.
-                tableau.abortForAuth("Invalid Access Token");
-            }
+                table.appendRows(dataToReturn);
+                doneCallback();
+            //}
+            //else {
+            //    tableau.abortWithError("No results found - campaign");
+            //}npm
         });
     }
   };
