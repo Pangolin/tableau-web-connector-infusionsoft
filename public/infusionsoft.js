@@ -1,3 +1,5 @@
+import { strict } from "assert";
+
 (function() {
   'use strict';
 
@@ -132,7 +134,24 @@
     var contacts_col3 = { id: "middle_name", dataType: "string"};
     var contacts_col4 = { id: "family_name", dataType: "string"};
     var contacts_col5= { id: "owner_id", dataType: "int"};
-    var contacts_cols = [contacts_col1, contacts_col2, contacts_col3, contacts_col4, contacts_col5];
+    var contacts_col6 = { id: "email_opted_in", dataType: "bool"};
+    var contacts_col7 = { id: "date_created", dataType: "datetime"};
+    var contacts_col8 = { id: "last_updated", dataType: "datetime"};
+    var contacts_col9 = { id: "email_status", dataType: "string"};
+    var contacts_col10 = { id: "company_id", dataType: "int"};
+    var contacts_col11 = { id: "company_name", dataType: "string"};
+    //addresses[]
+    //tag_ids[]
+    //email_status", dataType: " str
+    //phone_numbers[]
+    //"number": "(305) 710-6357",
+    //      "extension": null,
+    //      "field": "PHONE1",
+    //      "type": null
+    //},
+    
+    var contacts_cols = [contacts_col1, contacts_col2, contacts_col3, contacts_col4, contacts_col5,
+        contacts_col6, contacts_col7, contacts_col8, contacts_col9, contacts_col10, contacts_col11];
 
     var tableInfo_campaign = {
         id: "Campaign",
@@ -187,10 +206,19 @@
  
     }
     else if (table.tableInfo.id == "Contacts") {
-        $.getJSON(contactsUri, function(data) {
-            //if (data.response) {
-                var contacts = data.contacts;
+        hasMoreData = true;
+        var offset = 0;
+        while(hasMoreData) {
+            contactsUri = contactsUri + "limit=1000&order=id&offset=" + toString(offset);
 
+            $.getJSON(contactsUri, function(data) {
+                //if (data.response) {
+                //limit=5&offset=5&order=id
+                offset = offset + 1000;
+                if (contacts.length < 1000) {
+                    hasMoreData = false;
+                }
+                var contacts = data.contacts;
                 var ii;
                 for (ii = 0; ii < contacts.length; ++ii) {
                     var contact = {'id': contacts[ii].id,
@@ -198,17 +226,19 @@
                                     'middle_name': contacts[ii].middle_name,
                                     'family_name' : contacts[ii].family_name,
                                     'owner_id' : contacts[ii].owner_id,
+                                    "email_opted_in": contacts[ii].email_opted_in,
+                                    "date_created": contacts[ii].date_created,
+                                    "last_updated": contacts[ii].last_updated,
+                                    "email_status": contacts[ii].email_status,
+                                    "company_id": contacts[ii].company.id,
+                                    "company_name": contacts[ii].company.company_name
                                 };
                     dataToReturn.push(contact);
                 }
-
                 table.appendRows(dataToReturn);
-                doneCallback();
-            //}
-            //else {
-            //    tableau.abortWithError("No results found - campaign");
-            //}npm
-        });
+            });
+        }
+        doneCallback();
     }
   };
 
