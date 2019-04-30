@@ -150,8 +150,7 @@ import { strict } from "assert";
     //      "type": null
     //},
     
-    var contacts_cols = [contacts_col1, contacts_col2, contacts_col3, contacts_col4, contacts_col5,
-        contacts_col6, contacts_col7, contacts_col8, contacts_col9, contacts_col10, contacts_col11];
+    var contacts_cols = [contacts_col1, contacts_col2, contacts_col3, contacts_col4, contacts_col5, contacts_col6, contacts_col7, contacts_col8, contacts_col9, contacts_col10, contacts_col11];
 
     var tableInfo_campaign = {
         id: "Campaign",
