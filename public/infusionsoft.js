@@ -221,7 +221,7 @@
 					if (base_fields[key] == "datetime") {
 						try {
 							var date = new Date(retArray[ii][key]);
-                            dataPair[key] = date.YYYYMMDDHHMMSS();
+                            dataPair[key] = date.toISOString();
                             //dataPair[key] = date;
 						}
 						catch(err) {
