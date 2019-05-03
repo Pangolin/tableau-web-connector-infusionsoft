@@ -189,7 +189,7 @@
                 hasMoreData = false;
             
             //dataToReturn = getDataFromResponse(retArray, campaign_fields);
-            dataToReturn = dataToReturn.concat(getDataFromResponse(retArray, InfusionSoftModel[table].base_fields));
+            dataToReturn = dataToReturn.concat(getDataFromResponse(retArray, InfusionSoftModel[table]));
         }
         /*
         $.getJSON(uri, function(data) {
