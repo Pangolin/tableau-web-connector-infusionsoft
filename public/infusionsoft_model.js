@@ -245,7 +245,23 @@ var products = {
 		
       ],*/
       "url": "string"
-    }
+}
+var tags = {
+	/**/
+	"description": "string",
+	"id": "int",
+	"name": "string"
+}
+var tags_nestedJSON = {
+	"NESTED_IN": "tags",
+	"ITEMS": {
+		"category": {
+			"description": "string",
+			"id": "int",
+			"name": "string"
+		},
+	}
+}
 
 var InfusionSoftModel = 
 	{ 	
@@ -291,5 +307,11 @@ var InfusionSoftModel =
 			"base_fields": products,
 			"nested_fields": "{ \"ITEMS\": {}}"
 		},
+		"tags" :
+		{
+			"end_point": "tags",
+			"uri": "https://api.infusionsoft.com/crm/rest/v1/products?access_token=",
+			"base_fields": tags,
+			"nested_fields": tags_nestedJSON
+		},
 	}
-								
