@@ -114,104 +114,98 @@
   // Declare the data to Tableau that we are returning from infusionsoft
   myConnector.getSchema = function(schemaCallback) {
     var schema = [];
-    //Campaign
-    //Contact
-    //Email
-    //Note
-    //Opportunity
-    //Product
-    //Tags
-    var campaign_col1 = { id: "id", dataType: "int"};
-    var campaign_col2 = { id: "name", dataType: "string"};
-    var campaign_col3 = { id: "active_contact_count", dataType: "int"};
-    var campaign_col4 = { id: "completed_contact_count", dataType: "int"};
-    var campaign_cols = [campaign_col1, campaign_col2, campaign_col3, campaign_col4];
 
-    var contacts_col1 = { id: "id", dataType: "int"};
-    var contacts_col2 = { id: "given_name", dataType: "string"};
-    var contacts_col3 = { id: "middle_name", dataType: "string"};
-    var contacts_col4 = { id: "family_name", dataType: "string"};
-    var contacts_col5= { id: "owner_id", dataType: "int"};
-    var contacts_cols = [contacts_col1, contacts_col2, contacts_col3, contacts_col4, contacts_col5];
+    for (var tab in InfusionSoftModel) {
+        
+        var schema_cols = [];
+        var fields = InfusionSoftModel[tab].base_fields;
+        for (var key in fields) {
+            // check if the property/key is defined in the object itself, not in parent
+            if (fields.hasOwnProperty(key)) { 
+                var col = {"id": "", "dataType": ""};
+                col["id"] = key;
+                col["dataType"] = fields[key];
+                schema_cols.push(col);
+            }
+        }
+        var tableInfo = {
+            id: tab,
+            columns: schema_cols
+        };
+        schema.push(tableInfo);
+    }
 
-    var tableInfo_campaign = {
-        id: "Campaign",
-        columns: campaign_cols
-    };
-    
-    var tableInfo_contacts = {
-        id: "Contacts",
-        columns: contacts_cols
-    };
-
-    schema.push(tableInfo_campaign);
-    schema.push(tableInfo_contacts);
-
-    schemaCallback(schema);
+     schemaCallback(schema);
   };
 
   // This function actually make the infusionsoft API call and
   // parses the results and passes them back to Tableau
-  myConnector.getData = function(table, doneCallback) {
-    var dataToReturn = [];
-    var hasMoreData = false;
+    myConnector.getData = function(table, doneCallback) {
+        var dataToReturn = [];
+        dataToReturn = getJSONResults(table.tableInfo.id);
+        table.appendRows(dataToReturn);
+        doneCallback();
 
-    var accessToken = tableau.password;
-    //var connectionUri = getVenueLikesURI(accessToken);
-    var campaignsUri = "https://api.infusionsoft.com/crm/rest/v1/campaigns?access_token="+accessToken;
-    var contactsUri = "https://api.infusionsoft.com/crm/rest/v1/contacts?access_token="+accessToken;
-    tableau.log("in get Data");
+    };
 
-    if (table.tableInfo.id == "Campaign") {
+    function getJSONResults(table) {
+        var dataToReturn = [];
+        //var accessToken = Cookies.get("accessToken");
+        var accessToken = tableau.password;
+        var uri = InfusionSoftModel[table].uri + accessToken;
+        //console.log(uri);
+        var hasMoreData = true;
+        var offset = 0;
 
-        $.getJSON(campaignsUri, function(data) {
-            //if (data.response) {
-                var campaigns = data.campaigns;
 
-                var ii;
-                for (ii = 0; ii < campaigns.length; ++ii) {
-                    var campaign = {'id': campaigns[ii].id,
-                                'name': campaigns[ii].name,
-                                'active_contact_count': campaigns[ii].active_contact_count,
-                                'completed_contact_count' : campaigns[ii].completed_contact_count};
-                    dataToReturn.push(campaign);
-                }
+        while(hasMoreData && offset < 5000) {
+            var offset_uri = uri + "&limit=1000&offset=" + offset;
+            offset = offset + 1000;
 
-                table.appendRows(dataToReturn);
-                doneCallback();
-            //}
-            //else {
-            //    tableau.abortWithError("No results found - campaign");
-            //}
-        });
- 
+            var value= $.ajax({ 
+                    url: offset_uri, 
+                    async: false
+                }).responseJSON;
+            
+            var retArray = value[table];
+            
+            if (retArray.length < 1000)
+                hasMoreData = false;
+            
+            //dataToReturn = getDataFromResponse(retArray, campaign_fields);
+            dataToReturn = dataToReturn.concat(getDataFromResponse(retArray, InfusionSoftModel[table].base_fields));
+        }
+        /*
+        $.getJSON(uri, function(data) {
+                    var retArray = data[table];
+                    //dataToReturn = getDataFromResponse(retArray, InfusionSoftModel[table].base_fields);
+                    dataToReturn = getDataFromResponse(retArray, campaign_fields);
+        });*/
+        console.log("dataToReturn length 2: " + dataToReturn.length);
+        return dataToReturn;
     }
-    else if (table.tableInfo.id == "Contacts") {
-        $.getJSON(contactsUri, function(data) {
-            //if (data.response) {
-                var contacts = data.contacts;
 
-                var ii;
-                for (ii = 0; ii < contacts.length; ++ii) {
-                    var contact = {'id': contacts[ii].id,
-                                    'given_name': contacts[ii].given_name,
-                                    'middle_name': contacts[ii].middle_name,
-                                    'family_name' : contacts[ii].family_name,
-                                    'owner_id' : contacts[ii].owner_id,
-                                };
-                    dataToReturn.push(contact);
+
+
+
+    function getDataFromResponse(retArray, collTemplate) {
+        var dataToReturn = [];
+        var ii;
+        console.log("return length: " + retArray.length);
+
+        for (ii = 0; ii < retArray.length; ++ii) {
+            var dataPair = {};
+            for (var key in collTemplate) {
+                // check if the property/key is defined in the object itself, not in parent
+                if (collTemplate.hasOwnProperty(key)) { 
+                    dataPair[key] = retArray[ii][key];
                 }
-
-                table.appendRows(dataToReturn);
-                doneCallback();
-            //}
-            //else {
-            //    tableau.abortWithError("No results found - campaign");
-            //}npm
-        });
+            }
+            dataToReturn.push(dataPair);
+        }
+        //console.log("dataToReturn length 1 : " + dataToReturn.length);
+        return dataToReturn;
     }
-  };
-
-  // Register the tableau connector, call this last
-  tableau.registerConnector(myConnector);
+    // Register the tableau connector, call this last
+    tableau.registerConnector(myConnector);
 })();

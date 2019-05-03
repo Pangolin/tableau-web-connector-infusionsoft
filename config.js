@@ -3,5 +3,5 @@
 // And the new redirect path for the OAuth flow
 module.exports = {
  'HOSTPATH': 'https://wdc-infusionsoft.herokuapp.com',
- 'REDIRECT_PATH': '/redirect'
+ 'REDIRECT_PATH': '/redirect',
 };
