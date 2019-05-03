@@ -175,7 +175,7 @@ var opportunities_nestedJSON = {
 			  "stage_order": 0,
 			  "target_num_days": 0
 			},*/
-			"id": 0,
+			"id": "int",
 			"name": "string",
 			/*"reasons": [
 			  "string"
@@ -245,7 +245,23 @@ var products = {
 		
       ],*/
       "url": "string"
-    }
+}
+var tags = {
+	/**/
+	"description": "string",
+	"id": "int",
+	"name": "string"
+}
+var tags_nestedJSON = {
+	"NESTED_IN": "tags",
+	"ITEMS": {
+		"category": {
+			"description": "string",
+			"id": "int",
+			"name": "string"
+		},
+	}
+}
 
 var InfusionSoftModel = 
 	{ 	
@@ -291,5 +307,11 @@ var InfusionSoftModel =
 			"base_fields": products,
 			"nested_fields": "{ \"ITEMS\": {}}"
 		},
+		"tags" :
+		{
+			"end_point": "tags",
+			"uri": "https://api.infusionsoft.com/crm/rest/v1/tags?access_token=",
+			"base_fields": tags,
+			"nested_fields": tags_nestedJSON
+		},
 	}
-								

@@ -207,7 +207,7 @@
     function getDataFromResponse(retArray, collTemplate) {
 		var dataToReturn = [];
 		var ii;
-		console.log("return length: " + retArray.length);
+		//console.log("return length: " + retArray.length);
 		
 		var base_fields = collTemplate.base_fields;
 		var nested_fields = collTemplate.nested_fields;
@@ -217,7 +217,20 @@
 			for (var key in base_fields) {
 				// check if the property/key is defined in the object itself, not in parent
 				if (base_fields.hasOwnProperty(key)) { 
-					dataPair[key] = retArray[ii][key];
+					
+					if (base_fields[key] == "datetime") {
+						try {
+							var date = new Date(retArray[ii][key]);
+							dataPair[key] = date.YYYYMMDDHHMMSS();
+						}
+						catch(err) {
+							//console.log("error:" + err);
+							dataPair[key] = retArray[ii][key];
+						}
+					}
+					else {
+						dataPair[key] = retArray[ii][key];
+					}
 				}
 			}
 			for (var f2 in nested_fields.ITEMS) {
@@ -233,15 +246,27 @@
 			}
 			dataToReturn.push(dataPair);
 		}
-		
-		
-			//console.log(nested_fields);
-			
-		
-		
-		//console.log("dataToReturn length 1 : " + dataToReturn.length);
 		return dataToReturn;
 	}
+    Date.prototype.YYYYMMDDHHMMSS = function () {
+        var yyyy = this.getFullYear().toString();
+        var MM = this.getMonth().toString().paddingLeft("00");
+        var dd = this.getDate().toString().paddingLeft("00");
+        var hh = this.getHours().toString().paddingLeft("00");
+        var mm = this.getMinutes().toString().paddingLeft("00");
+        var ss = this.getSeconds().toString().paddingLeft("00");
+		
+		//var MM = pad(this.getMonth() + 1,2);
+        //var dd = pad(this.getDate(), 2);
+        //var hh = pad(this.getHours(), 2);
+        //var mm = pad(this.getMinutes(), 2)
+        //var ss = pad(this.getSeconds(), 2)
+
+        return yyyy + '-' + MM + '-' + dd + ' ' + hh  + ':' + mm + ':' + ss;
+    };
+	String.prototype.paddingLeft = function (paddingValue) {
+		return String(paddingValue + this).slice(-paddingValue.length);
+	};
     // Register the tableau connector, call this last
     tableau.registerConnector(myConnector);
 })();
