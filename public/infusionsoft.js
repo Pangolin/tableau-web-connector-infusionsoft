@@ -222,7 +222,7 @@
 						try {
                             //var date = new Date(retArray[ii][key]);
                             //var date2= new Date(date.getYear(), date.getMonth, date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), 0);
-                            var dateFormat = "Y-MM-DD HH:mm:ss";
+                            var dateFormat = "YYYY-MM-DD HH:mm:ss";
  
                             //var date = moment(retArray[ii][key]).format(dateFormat);
                             //var strDate = retArray[ii][key].str.substring(0, 19)+'Z';
