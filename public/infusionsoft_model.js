@@ -254,7 +254,7 @@ var InfusionSoftModel =
 			"end_point": "campaigns",
 			"uri": "https://api.infusionsoft.com/crm/rest/v1/campaigns?access_token=",
 			"base_fields": campaigns,
-			"nested_fields": "{ \"ITEMS\": {}}"
+			"nested_fields": { "ITEMS": {}},
 		},
 		"contacts" :
 		{
@@ -268,7 +268,7 @@ var InfusionSoftModel =
 			"end_point": "emails",
 			"uri": "https://api.infusionsoft.com/crm/rest/v1/emails?access_token=",
 			"base_fields": emails,
-			"nested_fields": "{ \"ITEMS\": {}}"
+			"nested_fields": { "ITEMS": {}},
 		},
 		"notes" :
 		{
@@ -289,7 +289,7 @@ var InfusionSoftModel =
 			"end_point": "products",
 			"uri": "https://api.infusionsoft.com/crm/rest/v1/products?access_token=",
 			"base_fields": products,
-			"nested_fields": "{ \"ITEMS\": {}}"
+			"nested_fields": { "ITEMS": {}},
 		},
 	}
 								
