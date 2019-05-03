@@ -221,7 +221,7 @@
 					if (base_fields[key] == "datetime") {
 						try {
 							var date = new Date(retArray[ii][key]);
-                            dataPair[key] = date.toISOString();
+                            dataPair[key] = date.YYYYMMDDHHMMSS();
                             //dataPair[key] = date;
 						}
 						catch(err) {
@@ -263,7 +263,7 @@
         //var mm = pad(this.getMinutes(), 2)
         //var ss = pad(this.getSeconds(), 2)
 
-        return yyyy + '-' + MM + '-' + dd + ' ' + hh  + ':' + mm + ':' + ss;
+        return yyyy + '/' + MM + '/' + dd + ' ' + hh  + ':' + mm + ':' + ss;
     };
 	String.prototype.paddingLeft = function (paddingValue) {
 		return String(paddingValue + this).slice(-paddingValue.length);
