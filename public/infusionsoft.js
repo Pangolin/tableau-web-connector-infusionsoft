@@ -174,7 +174,7 @@
         var offset = 0;
 
 
-        while(hasMoreData && offset < 5000) {
+        while(hasMoreData && offset < 20000) {
             var offset_uri = uri + "&limit=1000&offset=" + offset;
             offset = offset + 1000;
 
