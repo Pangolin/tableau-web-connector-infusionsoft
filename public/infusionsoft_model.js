@@ -310,7 +310,7 @@ var InfusionSoftModel =
 		"tags" :
 		{
 			"end_point": "tags",
-			"uri": "https://api.infusionsoft.com/crm/rest/v1/products?access_token=",
+			"uri": "https://api.infusionsoft.com/crm/rest/v1/tags?access_token=",
 			"base_fields": tags,
 			"nested_fields": tags_nestedJSON
 		},
