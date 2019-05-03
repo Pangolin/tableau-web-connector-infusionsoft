@@ -2,7 +2,6 @@
 npm-debug.log*
 node_modules
 .env
-infusionsoft_model.js
 self_contained.html
 self_contained.js
 self_contained.png

@@ -114,11 +114,10 @@
   // Declare the data to Tableau that we are returning from infusionsoft
   myConnector.getSchema = function(schemaCallback) {
     var schema = [];
-
-    for (var tab in InfusionSoftModel) {
-        
+    for (var tab in InfusionSoftModel) { 
         var schema_cols = [];
         var fields = InfusionSoftModel[tab].base_fields;
+        //console.log(fields);
         for (var key in fields) {
             // check if the property/key is defined in the object itself, not in parent
             if (fields.hasOwnProperty(key)) { 
@@ -128,6 +127,23 @@
                 schema_cols.push(col);
             }
         }
+        var nested_fields = InfusionSoftModel[tab].nested_fields;
+        //console.log(nested_fields);
+        for (var f2 in nested_fields.ITEMS) {
+            //console.log(f2);
+            for (var key in nested_fields.ITEMS[f2]) {
+                console.log(key);
+                // check if the property/key is defined in the object itself, not in parent
+                //if (f2.hasOwnProperty(key)) 
+                //{ 
+                    var col = {"id": "", "dataType": ""};
+                    col["id"] = f2 + "_" + key;
+                    col["dataType"] = nested_fields.ITEMS[f2][key];
+                    schema_cols.push(col);
+                //}
+            }
+        }
+        
         var tableInfo = {
             id: tab,
             columns: schema_cols
@@ -189,23 +205,43 @@
 
 
     function getDataFromResponse(retArray, collTemplate) {
-        var dataToReturn = [];
-        var ii;
-        console.log("return length: " + retArray.length);
-
-        for (ii = 0; ii < retArray.length; ++ii) {
-            var dataPair = {};
-            for (var key in collTemplate) {
-                // check if the property/key is defined in the object itself, not in parent
-                if (collTemplate.hasOwnProperty(key)) { 
-                    dataPair[key] = retArray[ii][key];
-                }
-            }
-            dataToReturn.push(dataPair);
-        }
-        //console.log("dataToReturn length 1 : " + dataToReturn.length);
-        return dataToReturn;
-    }
+		var dataToReturn = [];
+		var ii;
+		console.log("return length: " + retArray.length);
+		
+		var base_fields = collTemplate.base_fields;
+		var nested_fields = collTemplate.nested_fields;
+		
+		for (ii = 0; ii < retArray.length; ++ii) {
+			var dataPair = {};
+			for (var key in base_fields) {
+				// check if the property/key is defined in the object itself, not in parent
+				if (base_fields.hasOwnProperty(key)) { 
+					dataPair[key] = retArray[ii][key];
+				}
+			}
+			for (var f2 in nested_fields.ITEMS) {
+				for (var key in nested_fields.ITEMS[f2]) {
+					//console.log(key);
+					try {
+						dataPair[f2 + "_" + key] = retArray[ii][f2][key];
+					}
+					catch(err){
+						dataPair[f2 + "_" + key] = null;
+					}
+				}
+			}
+			dataToReturn.push(dataPair);
+		}
+		
+		
+			//console.log(nested_fields);
+			
+		
+		
+		//console.log("dataToReturn length 1 : " + dataToReturn.length);
+		return dataToReturn;
+	}
     // Register the tableau connector, call this last
     tableau.registerConnector(myConnector);
 })();
