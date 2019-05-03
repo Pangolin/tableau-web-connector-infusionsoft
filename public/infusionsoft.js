@@ -220,8 +220,11 @@
 					
 					if (base_fields[key] == "datetime") {
 						try {
-							var date = new Date(retArray[ii][key]);
-                            dataPair[key] = date.YYYYMMDDHHMMSS();
+                            var date = new Date(retArray[ii][key]);
+                            var date2= new Date(date.getYear(), date.getMonth, date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), 0);
+                            
+                            dataPair[key] = date2.toISOString();
+                            //date.YYYYMMDDHHMMSS();
                             //dataPair[key] = date;
 						}
 						catch(err) {
