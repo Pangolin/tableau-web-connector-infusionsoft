@@ -180,7 +180,7 @@
         
 		
 		while(hasMoreData && offset < 20000) {
-			offset_uri = uri + "&limit=1000&offset=" + offset;
+			var offset_uri = uri + "&limit=1000&offset=" + offset;
 			offset = offset + 1000;
 		
 			var value= $.ajax({ 
