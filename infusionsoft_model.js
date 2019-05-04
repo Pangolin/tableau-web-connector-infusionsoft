@@ -58,6 +58,22 @@ var contacts_nestedJSON = {
 		},
 	}
 }
+var cotacts_nestedArrays = {
+	"NESTED_IN": "contacts",
+	"PICK": "FIRST",
+	"ITEMS": {
+		"phone_numbers": {
+			"number": "string",
+			"extension": "string",
+			"field": "string",
+			"type": "string"
+		},
+		"email_addresses": {
+          "email": "string",
+          "field": "string"
+        },
+	}
+}
 
 
 /*Email,Note,Opportunity,Product,Tags*/
@@ -262,56 +278,100 @@ var tags_nestedJSON = {
 		},
 	}
 }
+var contact_tags = {
+	/**/
+	"tagid": "int",
+	"date_applied": "datetime"
+}
+var contact_tags_nestedJSON = {
+	"NESTED_IN": "contact_tags",
+	"ITEMS": {
+		"contact": {
+			"email": "string",
+			"id": "int",
+			"first_name": "string",
+			"last_name": "string",
+		},
+	}
+}
+
 
 var InfusionSoftModel = 
 	{ 	
 		"campaigns" : 
 		{
+			"handling":"normal",
 			"end_point": "campaigns",
 			"uri": "https://api.infusionsoft.com/crm/rest/v1/campaigns?access_token=",
 			"base_fields": campaigns,
-			"nested_fields": "{ \"ITEMS\": {}}"
+			"nested_fields": "{ \"ITEMS\": {}}",
+			"nested_arrays": "{ \"PICK\": \"\", \"ITEMS\": {}}",
 		},
 		"contacts" :
 		{
+			"handling":"normal",
 			"end_point": "contacts",
 			"uri": "https://api.infusionsoft.com/crm/rest/v1/contacts?access_token=",
 			"base_fields": contacts,
-			"nested_fields" : contacts_nestedJSON
+			"nested_fields" : contacts_nestedJSON,
+			"nested_arrays" : cotacts_nestedArrays
 		},
 		"emails" :
 		{
+			"handling":"normal",
 			"end_point": "emails",
 			"uri": "https://api.infusionsoft.com/crm/rest/v1/emails?access_token=",
 			"base_fields": emails,
-			"nested_fields": "{ \"ITEMS\": {}}"
+			"nested_fields": "{ \"ITEMS\": {}}",
+			"nested_arrays": "{ \"PICK\": \"\", \"ITEMS\": {}}",
 		},
 		"notes" :
 		{
+			"handling":"normal",
 			"end_point": "notes",
 			"uri": "https://api.infusionsoft.com/crm/rest/v1/notes?access_token=",
 			"base_fields": notes,
-			"nested_fields": notes_nestedJSON
+			"nested_fields": notes_nestedJSON,
+			"nested_arrays": "{ \"PICK\": \"\", \"ITEMS\": {}}",
 		},
 		"opportunities" :
 		{
+			"handling":"normal",
 			"end_point": "opportunities",
 			"uri": "https://api.infusionsoft.com/crm/rest/v1/opportunities?access_token=",
 			"base_fields": opportunities,
-			"nested_fields": opportunities_nestedJSON
+			"nested_fields": opportunities_nestedJSON,
+			"nested_arrays": "{ \"PICK\": \"\", \"ITEMS\": {}}",
 		},
 		"products" :
 		{
+			"handling":"normal",
 			"end_point": "products",
 			"uri": "https://api.infusionsoft.com/crm/rest/v1/products?access_token=",
 			"base_fields": products,
-			"nested_fields": "{ \"ITEMS\": {}}"
+			"nested_fields": "{ \"ITEMS\": {}}",
+			"nested_arrays": "{ \"PICK\": \"\", \"ITEMS\": {}}",
 		},
 		"tags" :
 		{
+			"handling":"normal",
 			"end_point": "tags",
 			"uri": "https://api.infusionsoft.com/crm/rest/v1/tags?access_token=",
 			"base_fields": tags,
-			"nested_fields": tags_nestedJSON
+			"nested_fields": tags_nestedJSON,
+			"nested_arrays": "{ \"PICK\": \"\", \"ITEMS\": {}}",
+		},
+		"contact_tags" :
+		{
+			"handling":"special",
+			"First_end_point": "tags",
+			"loop_element":"id",
+			"loop_element_alias":"tagid",
+			"First_uri": "https://api.infusionsoft.com/crm/rest/v1/tags?access_token=",
+			"Second_end_point": "contacts",
+			"Second_uri": "https://api.infusionsoft.com/crm/rest/v1/tags/<<loop_element>>/contacts?access_token=",
+			"base_fields": contact_tags,
+			"nested_fields": contact_tags_nestedJSON,
+			"nested_arrays": "{ \"PICK\": \"\", \"ITEMS\": {}}",
 		},
 	}
