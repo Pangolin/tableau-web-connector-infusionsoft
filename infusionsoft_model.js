@@ -351,6 +351,7 @@ var InfusionSoftModel =
 			"base_fields": products,
 			"nested_fields": "{ \"ITEMS\": {}}",
 			"nested_arrays": "{ \"PICK\": \"\", \"ITEMS\": {}}",
+			
 		},
 		"tags" :
 		{
