@@ -173,7 +173,8 @@
 
     function getJSONResults(table) {
 		var dataToReturn = [];
-		var accessToken = Cookies.get("accessToken");
+        //var accessToken = Cookies.get("accessToken");
+        var accessToken = tableau.password;
 		var uri = InfusionSoftModel[table].uri + accessToken;
 		var hasMoreData = true;
 		var offset = 0;
@@ -200,7 +201,8 @@
 	}
 	function getJSONResultsSpecial(table) {
 		var dataToReturn = [];
-		var accessToken = Cookies.get("accessToken");
+        //var accessToken = Cookies.get("accessToken");
+        var accessToken = tableau.password;
 		var uri = InfusionSoftModel[table].First_uri + accessToken;
 		
 		var value= $.ajax({ 
