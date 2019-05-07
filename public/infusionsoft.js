@@ -335,7 +335,7 @@
 		var base_fields = collTemplate.base_fields;
 		
 		for (ii = 0; ii < retArray.length; ++ii) {
-            custom_fields = retArray[ii]['custom_fields'];
+            var custom_fields = retArray[ii]['custom_fields'];
             for (field in custom_fields) {
                 var dataPair = {};
                 try {
