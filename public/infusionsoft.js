@@ -192,8 +192,13 @@
 			var retArray = value[InfusionSoftModel[table].end_point];		
 			if (retArray.length < 1000)
 				hasMoreData = false;
-			
-			dataToReturn = dataToReturn.concat(getDataFromResponse(retArray, InfusionSoftModel[table], null));
+            
+            if ( InfusionSoftModel[table].handling != "special_array" ){ 
+                dataToReturn = dataToReturn.concat(getDataFromResponse(retArray, InfusionSoftModel[table], null));
+            }
+            else {
+                dataToReturn = dataToReturn.concat(getDataFromResponseSpecial(retArray, InfusionSoftModel[table], null));
+            }
 		}
 
 		console.log("dataToReturn length 2: " + dataToReturn.length);
@@ -320,6 +325,36 @@
 		return dataToReturn;
 	}
 
+    function getDataFromResponseSpecial(retArray, collTemplate, loop_val) {
+		var dataToReturn = [];
+		var ii;
+		//console.log("return length: " + retArray.length);
+		
+		//console.log("loop_val : " + loop_val);
+		
+		var base_fields = collTemplate.base_fields;
+		
+		for (ii = 0; ii < retArray.length; ++ii) {
+            custom_fields = retArray[ii]['custom_fields'];
+            for (field in custom_fields) {
+                var dataPair = {};
+                try {
+                    dataPair['contacts_id'] = retArray[ii]['id'];
+                    dataPair['custom_fields_id'] = field['id'];
+                    dataPair['custom_fields_content'] = field['content'];
+                }
+                catch(err) {
+                    console.log("error:" + err);
+                }
+                if (!isEmpty(dataPair))
+                    dataToReturn.push(dataPair);
+            }	
+		}
+		return dataToReturn;
+    }
+    function isEmpty(obj) {
+        return Object.keys(obj).length === 0;
+      }
     // Register the tableau connector, call this last
     tableau.registerConnector(myConnector);
 })();

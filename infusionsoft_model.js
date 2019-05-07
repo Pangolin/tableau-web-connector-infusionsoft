@@ -295,6 +295,18 @@ var contact_tags_nestedJSON = {
 	}
 }
 
+var contact_custom_fields = {
+	"id": "int",
+	"label": "string",
+	"record_type": "string",
+	"field_type": "datetime"
+}
+
+var contact_custom_field_values = {
+	"contacts_id":"int",
+	"custom_fields_id": "int",
+	"custom_fields_content": "string"
+}
 
 var InfusionSoftModel = 
 	{ 	
@@ -351,7 +363,6 @@ var InfusionSoftModel =
 			"base_fields": products,
 			"nested_fields": "{ \"ITEMS\": {}}",
 			"nested_arrays": "{ \"PICK\": \"\", \"ITEMS\": {}}",
-			
 		},
 		"tags" :
 		{
@@ -373,6 +384,24 @@ var InfusionSoftModel =
 			"Second_uri": "https://api.infusionsoft.com/crm/rest/v1/tags/<<loop_element>>/contacts?access_token=",
 			"base_fields": contact_tags,
 			"nested_fields": contact_tags_nestedJSON,
+			"nested_arrays": "{ \"PICK\": \"\", \"ITEMS\": {}}",
+		},
+		"contact_custom_fields":
+		{
+			"handling":"normal",
+			"end_point": "custom_fields",
+			"uri": "https://api.infusionsoft.com/crm/rest/v1/contacts/model?access_token=",
+			"base_fields": contact_custom_fields,
+			"nested_fields": "{ \"ITEMS\": {}}",
+			"nested_arrays": "{ \"PICK\": \"\", \"ITEMS\": {}}",
+		},
+		"contact_custom_field_values":
+		{
+			"handling":"special_array",
+			"end_point": "contacts",
+			"uri": "https://api.infusionsoft.com/crm/rest/v1/contacts?optional_properties=custom_fields&access_token=",
+			"base_fields": contact_custom_field_values,
+			"nested_fields": "{ \"ITEMS\": {}}",
 			"nested_arrays": "{ \"PICK\": \"\", \"ITEMS\": {}}",
 		},
 	}
