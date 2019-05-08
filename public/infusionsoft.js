@@ -336,7 +336,7 @@
 		
 		for (ii = 0; ii < retArray.length; ++ii) {
             var custom_fields = retArray[ii]['custom_fields'];
-            for (field in custom_fields) {
+            for (var field in custom_fields) {
                 var dataPair = {};
                 try {
                     dataPair['contacts_id'] = retArray[ii]['id'];
