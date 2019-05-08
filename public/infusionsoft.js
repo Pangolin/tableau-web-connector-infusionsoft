@@ -340,8 +340,8 @@
                 var dataPair = {};
                 try {
                     dataPair['contacts_id'] = retArray[ii]['id'];
-                    dataPair['custom_fields_id'] = field['id'];
-                    dataPair['custom_fields_content'] = field['content'];
+                    dataPair['custom_fields_id'] = retArray[ii]['custom_fields'][field]['id'];
+                    dataPair['custom_fields_content'] = retArray[ii]['custom_fields'][field]['content'];
                 }
                 catch(err) {
                     console.log("error:" + err);
