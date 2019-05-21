@@ -227,11 +227,11 @@
 			uri_2 = uri_2.replace("<<loop_element>>", loop_element_val);
 
 			while(hasMoreData && offset < 20000) {
-				uri_2 = uri_2 + "&limit=1000&offset=" + offset;
+				var uri_2_offset = uri_2 + "&limit=1000&offset=" + offset;
 				offset = offset + 1000;
 			
 				var value_2= $.ajax({ 
-					  url: uri_2, 
+					  url: uri_2_offset, 
 					  async: false
 				   }).responseJSON;
 				
